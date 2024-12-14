@@ -4,8 +4,8 @@ import axios from 'axios';
 function App() {
   const [questions, setQuestions] = useState('');
   const [answer, setAnswer] = useState('');
-  const [showAnswer, setShowAnswer] = useState(false); // New state for visibility
-  const [isLoading, setIsLoading] = useState(false); // New loading state
+  const [showAnswer, setShowAnswer] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false); 
 
   async function generateAnswer() {
     setIsLoading(true);
@@ -40,6 +40,7 @@ function App() {
         cols={50}
         rows={10}
         value={questions}
+        placeholder='Write your question here'
         onChange={(e) => setQuestions(e.target.value)}
       ></textarea>
       <button
@@ -50,11 +51,11 @@ function App() {
       </button>
       {isLoading ? ( // Conditional rendering for loading state
       <p className="text-white mt-4">Loading...</p>
-    ) : showAnswer && ( // Conditional rendering of the answer paragraph
-      <p className="border-2 border-gray-600 bg-gray-800 text-white rounded-lg p-2 w-full max-w-md mt-4 transition-colors duration-300">
+      ) : showAnswer && ( // Conditional rendering of the answer paragraph
+      <p className="border-2 border-gray-600 bg-gray-800 text-white rounded-lg p-2 w-full max-w-md mt-4 transition-colors duration-300" >
         {answer}
       </p>
-    )}
+      )}
   </div>
 );
 }
