@@ -1,4 +1,3 @@
-// App.jsx
 import { useState } from 'react';
 import axios from 'axios';
 import './App.css';
@@ -9,9 +8,9 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
 
-  async function generateAnswer() {
-    const apiKey = import.meta.env.VITE_API_KEY;
+  const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
+  async function generateAnswer() {
     if (!questions?.trim()) {
       setAnswer("Please enter a question first.");
       return;
@@ -21,38 +20,16 @@ function App() {
     setShowAnswer(false);
 
     try {
-      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent`;
-      
-      const response = await axios({
-        url: apiUrl,
-        method: 'post',
-        params: {
-          key: apiKey
-        },
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        data: {
-          contents: [
-            {
-              parts: [
-                {
-                  text: questions,
-                },
-              ],
-            },
-          ],
-        },
-      });
+      const response = await axios.post(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`,
+        { contents: [{ parts: [{ text: questions }] }] }
+      );
 
-      if (response.data?.candidates?.[0]?.content?.parts?.[0]?.text) {
-        setAnswer(response.data.candidates[0].content.parts[0].text);
-      } else {
-        setAnswer("No response generated. Please try again.");
-      }
+      const generatedText = response.data.candidates[0]?.content?.parts[0]?.text;
+      setAnswer(generatedText || "No response generated. Please try again.");
     } catch (error) {
-      console.error("Error:", error);
-      setAnswer(`Error: ${error.response?.data?.error?.message || error.message}`);
+      console.error("API Error:", error);
+      setAnswer(`Error: ${error.response?.data?.error || 'Failed to generate response'}`);
     } finally {
       setIsLoading(false);
       setShowAnswer(true);
