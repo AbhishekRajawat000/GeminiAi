@@ -161,3 +161,14 @@ textarea:focus {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary-hover);
 }
+
+.button-container {
+  display: flex;
+  gap: 10px;
+}
+
+.clear-button {
+  background-color: red;
+  color: white;
+}
+
